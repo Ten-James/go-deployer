@@ -114,7 +114,8 @@ func createZip(sourceDir string) ([]byte, error) {
 			return nil
 		}
 
-		zipFile, err := zipWriter.Create(relPath)
+		zipPath := strings.ReplaceAll(relPath, string(filepath.Separator), "/")
+		zipFile, err := zipWriter.Create(zipPath)
 		if err != nil {
 			return err
 		}
