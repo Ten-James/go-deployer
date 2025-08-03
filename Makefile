@@ -1,16 +1,16 @@
 build-server:
-	go build -o deploy-server server.go
+	go build -o bin/deploy-server ./server
 
 build-client:
-	go build -o go-deploy client.go
+	go build -o bin/go-deploy ./client
 
 build: build-server build-client
 
 run-server:
-	./deploy-server
+	./bin/deploy-server
 
 clean:
-	rm -f deploy-server go-deploy
+	rm -rf bin/
 	rm -rf uploads/
 
 .PHONY: build-server build-client build run-server clean

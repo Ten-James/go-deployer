@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package deploy;
+
+option go_package = "github.com/ten-james/go-deploy-system/shared/proto";
+
+service DeploymentService {
+  rpc Deploy(DeployRequest) returns (DeployResponse);
+  rpc DeployStream(DeployRequest) returns (stream ExecutionLog);
+  rpc GetDeploymentStatus(StatusRequest) returns (StatusResponse);
+}
+
+message DeployRequest {
+  string api_key = 1;
+  bytes deployment_data = 2;
+  string filename = 3;
+  bool use_yaml = 4;
+}
+
+message DeployResponse {
+  bool success = 1;
+  string message = 2;
+  string deployment_id = 3;
+}
+
+message ExecutionLog {
+  string timestamp = 1;
+  string job_name = 2;
+  string step_name = 3;
+  string log_type = 4; // "info", "error", "stdout", "stderr"
+  string message = 5;
+  bool completed = 6;
+}
+
+message StatusRequest {
+  string deployment_id = 1;
+  string api_key = 2;
+}
+
+message StatusResponse {
+  string status = 1;
+  string message = 2;
+  bool completed = 3;
+}

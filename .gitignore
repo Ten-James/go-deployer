@@ -1,2 +1,2 @@
-go-deploy
-server
+bin/
+*.exe
