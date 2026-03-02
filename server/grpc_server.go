@@ -257,29 +257,32 @@ func (s *deploymentServer) executeStep(workDir, jobName string, step shared.Step
 		sendLog(stream, jobName, step.Name, "info", "Step completed successfully")
 		return nil
 	}
-	
-	// Create command for other commands
-	cmd := exec.Command(step.Cmd, step.Args...)
-	cmd.Dir = workDir
-	cmd.Env = env
-	
-	// Execute command and capture output
-	output, err := cmd.CombinedOutput()
-	
-	if err != nil {
-		sendLog(stream, jobName, step.Name, "error", fmt.Sprintf("Command failed: %v", err))
-		if len(output) > 0 {
-			sendLog(stream, jobName, step.Name, "stderr", string(output))
+	if step.Cmd == "cmd" {
+		// Create command for other commands
+		cmd := exec.Command("/bin/bash", step.Args...)
+		cmd.Dir = workDir
+		cmd.Env = env
+		
+		// Execute command and capture output
+		output, err := cmd.CombinedOutput()
+		
+		if err != nil {
+			sendLog(stream, jobName, step.Name, "error", fmt.Sprintf("Command failed: %v", err))
+			if len(output) > 0 {
+				sendLog(stream, jobName, step.Name, "stderr", string(output))
+			}
+			return err
 		}
-		return err
+		
+		if len(strings.TrimSpace(string(output))) > 0 {
+			sendLog(stream, jobName, step.Name, "stdout", strings.TrimSpace(string(output)))
+		}
+		
+		sendLog(stream, jobName, step.Name, "info", "Step completed successfully")
+		return nil
 	}
 	
-	if len(output) > 0 {
-		sendLog(stream, jobName, step.Name, "stdout", strings.TrimSpace(string(output)))
-	}
-	
-	sendLog(stream, jobName, step.Name, "info", "Step completed successfully")
-	return nil
+	return status.Errorf(codes.InvalidArgument, "Unsupported command: %s", step.Cmd)
 }
 
 func (s *deploymentServer) interpretEcho(args []string, env []string) string {

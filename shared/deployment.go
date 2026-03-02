@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	
+
 	"gopkg.in/yaml.v3"
 )
 
@@ -36,6 +36,7 @@ type Step struct {
 // AllowedCommands lists the commands that are allowed in deployment steps
 var AllowedCommands = map[string]bool{
 	"echo": true,
+	"cmd":  true,
 	// Add more commands as needed:
 	// "npm":    true,
 	// "node":   true,

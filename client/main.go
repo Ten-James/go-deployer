@@ -145,9 +145,10 @@ func main() {
 	}
 
 	if err := sendDeployment(serverURL, zipData, config.APIKey, useYaml, verbose); err != nil {
-		fmt.Printf("Failed to send deployment: %v\n", err)
+		fmt.Printf("Failed to send deployment: \n%v\n", err)
 		os.Exit(1)
 	}
+	fmt.Println("Deployment successful!")
 
 }
 

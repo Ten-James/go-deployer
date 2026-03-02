@@ -9,16 +9,6 @@ env:
 
 # Jobs run in sequence
 jobs:
-  setup:
-    name: "Environment Setup"
-    steps:
-      - name: "Initialize environment"
-        cmd: "echo"
-        args: ["Setting up environment..."]
-      - name: "Check variables"
-        cmd: "echo"
-        args: ["NODE_ENV=$NODE_ENV, DEBUG=$DEBUG"]
-
   build:
     name: "Build Application"
     env:
@@ -27,42 +17,6 @@ jobs:
       - name: "Start build"
         cmd: "echo"
         args: ["Starting build process..."]
-      - name: "Build info"
-        cmd: "echo"
-        args: ["Building with BUILD_ENV=$BUILD_ENV"]
-      - name: "Complete build"
-        cmd: "echo"
-        args: ["Build completed successfully"]
-
-  test:
-    name: "Run Tests"
-    steps:
-      - name: "Unit tests"
-        cmd: "echo"
-        args: ["Running unit tests..."]
-      - name: "Integration tests"
-        cmd: "echo"
-        args: ["Running integration tests..."]
-
-  deploy:
-    name: "Deploy Application"
-    steps:
-      - name: "Deploy start"
-        cmd: "echo"
-        args: ["Starting deployment..."]
-      - name: "Deploy application"
-        cmd: "echo"
-        args: ["Deploying to production server"]
-      - name: "Deploy complete"
-        cmd: "echo"
-        args: ["Deployment completed successfully!"]
-
-  cleanup:
-    name: "Post-Deploy Cleanup"
-    steps:
-      - name: "Clean temporary files"
-        cmd: "echo"
-        args: ["Cleaning up temporary files..."]
-      - name: "Send notifications"
-        cmd: "echo"
-        args: ["Sending deployment notifications..."]
+      - name: "Build"
+        cmd: "cmd"
+        args: ["sh DEPLOY.sh"]
